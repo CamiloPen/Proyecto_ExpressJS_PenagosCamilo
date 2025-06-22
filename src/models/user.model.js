@@ -32,7 +32,7 @@ const userSchema = mongoose.Schema({
     },
     rol: {
         type: String,
-        enum: ['Student', 'Teacher', 'Admin']
+        enum: ['ST', 'TE', 'AD']
     },
     gender:  {
         type: String,

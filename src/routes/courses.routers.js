@@ -1,10 +1,10 @@
 import express from 'express';
 import { addOne, deleteOne, getAll, getById, updateOne } from '../controllers/courses.controller.js';
-import { validations } from '../config/courses.validator.js';
+import { courseValidations } from '../config/validations.js';
 
 const courseRouter  = express.Router();
 
-courseRouter.post('/', validations, addOne);
+courseRouter.post('/', courseValidations, addOne);
 
 courseRouter.get('/', getAll);
 

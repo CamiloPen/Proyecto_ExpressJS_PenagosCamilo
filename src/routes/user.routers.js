@@ -1,13 +1,16 @@
 import express from 'express';
-import { deleteOne, getAll, getById, updateOne } from '../controllers/users.controller.js';
+import {newUser, deleteOne, getAll, getById, updateOne } from '../controllers/users.controller.js';
+import { userValidations } from '../config/validations.js';
 
 const userRouter  = express.Router();
+
+userRouter.post('/',userValidations, newUser);
 
 userRouter.get('/', getAll);
 
 userRouter.get('/:_id', getById);
 
-userRouter.patch('/', updateOne);
+userRouter.put('/', updateOne);
 
 userRouter.delete('/:_id', deleteOne);
 

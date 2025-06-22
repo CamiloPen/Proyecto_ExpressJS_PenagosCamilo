@@ -9,7 +9,6 @@ export default class UserRegister {
         this.rol = data.rol
         this.gender = data.gender
         this.birthDate = data.birthDate
-        this.place = data.place
         this.place.cityCode = data.place.cityCode
         this.place.cityName = data.place.cityName
         this.place.address = data.place.address

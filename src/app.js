@@ -19,12 +19,19 @@ const app = express()
 app.use(session({
     secret: COOKIE_KEY,
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
+    cookie: {
+        httpOnly: true,
+        secure: false,      
+        sameSite: 'lax',   
+        maxAge: 3600000     
+    }
 }))
 
-app.use(cors(
-    {origin: 'http://localhost:5173'}
-));
+app.use(cors({
+    origin: 'http://localhost:5173',
+    credentials: true
+}));
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -32,7 +39,7 @@ app.use(passport.session());
 app.use(express.json())
 app.use('/auth', router)
 app.use('/courses', pass, courseRouter)
-app.use('/users', pass, userRouter)
+app.use('/user', userRouter)
 app.use('/teachers', pass, teacherRouter)
 
 app.listen({
