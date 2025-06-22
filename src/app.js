@@ -11,12 +11,10 @@ import router from './routes/auth.routes.js';
 import courseRouter from './routes/courses.routers.js';
 import teacherRouter from './routes/teacher.routes.js';
 import { pass } from './controllers/auth.controller.js';
+import userRouter from './routes/user.routers.js';
 
 connectDb()
 const app = express()
-app.use(cors(
-    {origin: 'http://localhost:5173'}
-));
 
 app.use(session({
     secret: COOKIE_KEY,
@@ -24,12 +22,17 @@ app.use(session({
     saveUninitialized: false
 }))
 
+app.use(cors(
+    {origin: 'http://localhost:5173'}
+));
+
 app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(express.json())
 app.use('/auth', router)
 app.use('/courses', pass, courseRouter)
+app.use('/users', pass, userRouter)
 app.use('/teachers', pass, teacherRouter)
 
 app.listen({

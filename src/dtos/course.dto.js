@@ -1,5 +1,3 @@
-
-
 export default class Course {
     constructor(data) {
         this.code = data.code

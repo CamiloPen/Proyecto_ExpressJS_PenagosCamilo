@@ -7,7 +7,11 @@ const authRouter  = express.Router();
 authRouter.get('/google', passport.authenticate('google', { scope: ['email', 'profile'] }));
 
 authRouter.get('/google/redirect', passport.authenticate('google'), (req, res) => { 
-    res.redirect('/courses')
+    if(req.user.rol) {
+        res.redirect('/courses')
+    } else {
+        res.redirect('http://localhost:5173/register')
+    }
 });
 
 authRouter.get('/login', login)

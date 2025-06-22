@@ -8,16 +8,10 @@ function RegisterPage() {
         <div>
             <form onSubmit={handleSubmit( async values =>{
                 console.log(values);
-                const res = await registerRequest(values)
-                console.log(res)
             })}>
                 <div>
                     <label htmlFor="username">UserName</label>
                     <input type="text" {...register('username', {required: true})}/>
-                </div>
-                <div>
-                    <label htmlFor="email">E-mail</label>
-                    <input type="email" {...register('email', {required: true})}/>
                 </div>
                 <div>
                     <label htmlFor="firstName">Digite su nombre</label>
