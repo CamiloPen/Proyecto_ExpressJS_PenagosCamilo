@@ -1,14 +1,9 @@
 import course from '../models/course.model.js';
 import Course from '../dtos/course.dto.js';
 import mongoose from 'mongoose';
-import { validationResult } from 'express-validator';
 
 export const addOne = async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() })
-    }
-
+    
     let newCourse = new Course(req.body)
     const topicObjectIds = newCourse.topic.map(id => new mongoose.Types.ObjectId(id));
     newCourse.topic = topicObjectIds

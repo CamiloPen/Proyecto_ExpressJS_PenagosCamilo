@@ -5,6 +5,8 @@ const API = 'http://localhost:4000'
 
 export const registerRequest = user => axios.put(`${API}/user/register`, user)
 
+export const login = () => axios.get(`${API}/user`,)
+
 export function loginRequest() {window.location.href = `${API}/auth/google`}
 
 export const getTopics = () => axios.get(`${API}/topics`)

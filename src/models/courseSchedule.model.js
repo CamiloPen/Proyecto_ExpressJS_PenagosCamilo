@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const courseScheduleSchema = new mongoose.Schema({
+const courseScheduleSchema = mongoose.Schema({
     code: {
         type: String,
         require: true,
@@ -11,8 +11,8 @@ const courseScheduleSchema = new mongoose.Schema({
         ref: 'courses'
     },
     schedule:  {
-        start: Number,
-        end: Number,
+        start: Date,
+        end: Date,
     },
     teacher: {
         type: mongoose.Schema.Types.ObjectId,
@@ -30,10 +30,8 @@ const courseScheduleSchema = new mongoose.Schema({
     active: {
         type: Boolean
     }
-},{
-  collection: 'courseSchedules'
 })
 
-const courseScheduleModel = mongoose.model('courseSchedules', courseScheduleSchema);
+const courseScheduleModel = mongoose.model('courseschedules', courseScheduleSchema);
 
 export default courseScheduleModel;

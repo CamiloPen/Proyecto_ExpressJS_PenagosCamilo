@@ -8,7 +8,7 @@ const courseController = createGenericController(courseModel);
 const customController = {
     ...courseController,
     getAll: getAllCourses,
-    addOne: addOne
+    addOne
 };
 
 export default createGenericRouter(customController);

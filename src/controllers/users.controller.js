@@ -1,15 +1,16 @@
 import UserRegister from '../dtos/user.dto.js';
 import user from '../models/user.model.js';
-import { validationResult } from 'express-validator';
 
 export const newUser = async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() })
-    }
     await user.updateOne({_id: req.user._id},{ $set: { ...(new UserRegister(req.body)), active: true}})
         .then(() => {res.status(200).json({ ok: true })})
         .catch(() => res.status(500).json({ message: "Error interno del servidor" }));
+}
+
+export const getUser = async (req, res) => {
+  await user.findOne({_id: req.user._id})
+      .then(user => {res.status(200).json(user)})
+      .catch(() => res.status(500).json({ message: "Error interno del servidor" }));
 }
 
 const getUsersByRole = async (req, res, role) => {

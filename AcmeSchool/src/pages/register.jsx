@@ -2,8 +2,10 @@ import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from "react-router-dom";
 import { registerRequest } from '../api/routes';
+import { useAuth } from '../context/AuthContext';
 
 function RegisterPage() {
+    const { singup } = useAuth()
     const { register, watch, handleSubmit, setValue } = useForm()
     const navigate = useNavigate();
     
@@ -48,6 +50,7 @@ function RegisterPage() {
         <div>
             <form onSubmit={handleSubmit(async values => {
                 const updateUser = {...values, rol: selectedRoles}
+                singup(updateUser)
                 try {
                     const response = await registerRequest(updateUser); 
                     if (response.status === 200) {

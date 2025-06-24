@@ -7,8 +7,8 @@ const scheduleController = createGenericController(courseScheduleModel);
 
 const customController = {
     ...scheduleController,
-    getAll: getAllSchedules,
-    addOne
+    addOne,
+    getAll: getAllSchedules
 };
 
 export default createGenericRouter(customController);

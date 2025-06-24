@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from "react";
-import { registerRequest } from "../api/routes";
+import { login, } from "../api/routes";
 
 export const AuthContext = createContext()
 
@@ -18,7 +18,7 @@ export const AuthProvider = ({ children }) => {
 
     const singup = async (user) => {
         try {
-            const res = await registerRequest(user);
+            const res = await login(user);
             console.log(res.data)
             setUser(res.data)
             setIsAuthenticated(true)
