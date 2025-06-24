@@ -1,9 +1,18 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { registerRequest } from '../api/auth';
+import { useNavigate } from "react-router-dom";
+import { registerRequest } from '../api/routes';
 
 function RegisterPage() {
     const { register, watch, handleSubmit, setValue } = useForm()
+    const navigate = useNavigate();
+    
+    const [selectedRoles, setSelectedRoles] = useState([]);
+
+    const handleChange = (e) => {
+        const selected = Array.from(e.target.selectedOptions, option => option.value);
+        setSelectedRoles(selected);
+    };
 
     const identificationCode = watch('identification.code');
     const placeCityCode = watch('place.cityCode');
@@ -38,8 +47,21 @@ function RegisterPage() {
     return (
         <div>
             <form onSubmit={handleSubmit(async values => {
-                console.log(values)
-                registerRequest(values)
+                const updateUser = {...values, rol: selectedRoles}
+                try {
+                    const response = await registerRequest(updateUser); 
+                    if (response.status === 200) {
+                        navigate('/courses'); 
+                    } else {
+                        console.log('Error en el registro:', response.data);
+                    }
+                } catch (error) {
+                    if (error.response) {
+                        console.log('Error del servidor:', error.response.data);
+                    } else {
+                        console.log('Error de red:', error.message);
+                    }
+                }
             })}>
                 <div>
                     <label htmlFor="firstName">Digite su nombre</label>
@@ -57,7 +79,7 @@ function RegisterPage() {
                         <option value="TI">Tarjeta de Identidad</option>
                         <option value="PAS">Pasaporte</option>
                     </select>
-                    <input type="hidden" id='identification.name' {...register('identification.name')}/>
+                    <input type="hidden" id='identification.name' {...register('identification.name')} />
                 </div>
                 <div>
                     <label htmlFor="identificatio.number">Número de Identificación</label>
@@ -65,7 +87,7 @@ function RegisterPage() {
                 </div>
                 <div>
                     <label htmlFor="rol">Rol</label>
-                    <select id='rol' {...register('rol', { required: true })}>
+                    <select id='rol' multiple value={selectedRoles} onChange={handleChange}>
                         <option value="AD">Administrador</option>
                         <option value="ST">Estudiante</option>
                         <option value="TE">Profesor</option>
@@ -95,7 +117,7 @@ function RegisterPage() {
                         <option value="MED">Medellin</option>
                         <option value="OTR">Otro</option>
                     </select>
-                    <input type='hidden' id='place.cityName' {...register('place.cityName')}/>
+                    <input type='hidden' id='place.cityName' {...register('place.cityName')} />
                 </div>
                 <div>
                     <label htmlFor="place.address">Dirección</label>

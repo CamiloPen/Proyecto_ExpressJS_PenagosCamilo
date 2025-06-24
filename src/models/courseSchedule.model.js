@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const courseScheduleSchema = mongoose.Schema({
+const courseScheduleSchema = new mongoose.Schema({
     code: {
         type: String,
         require: true,
@@ -30,8 +30,10 @@ const courseScheduleSchema = mongoose.Schema({
     active: {
         type: Boolean
     }
+},{
+  collection: 'courseSchedules'
 })
 
-const courseSchedule = mongoose.model('courseSchedules', courseScheduleSchema);
+const courseScheduleModel = mongoose.model('courseSchedules', courseScheduleSchema);
 
-export default courseSchedule;
+export default courseScheduleModel;

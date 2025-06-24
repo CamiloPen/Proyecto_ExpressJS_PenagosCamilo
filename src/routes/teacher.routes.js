@@ -1,24 +1,10 @@
-import express from 'express';
-import user from '../models/user.model.js';
+import teacherModel from '../models/user.model.js';
+import { createGenericController } from '../controllers/generic.controller.js';
+import { createGenericRouter } from './generic.routes.js';
+import { getAllTeachers } from '../controllers/users.controller.js';
 
-const teacherRouter  = express.Router();
+const teacherController = createGenericController(teacherModel);
 
-teacherRouter.get('/', (req, res) => {
-    user.find({rol: 'Teacher'})
-        .then(docs => res.send(docs))
-        .catch(error => res.send(error));
+export default createGenericRouter({
+    ...teacherController, getAll: getAllTeachers
 });
-
-teacherRouter.put('/:_id', (req, res) => {
-    user.updateOne(req.params, { $set: req.body })
-        .then(docs => res.send(docs))
-        .catch(error => res.send(error));
-});
-
-teacherRouter.delete('/:_id', (req, res) => {
-    user.deleteOne(req.params)
-        .then(docs => res.send(docs))
-        .catch(error => res.send(error));
-});
-
-export default teacherRouter;

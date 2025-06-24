@@ -3,34 +3,28 @@ import user from '../models/user.model.js';
 import { validationResult } from 'express-validator';
 
 export const newUser = async (req, res) => {
-    //const errors = validationResult(req);
-    console.log(req.user)
-    // if (!errors.isEmpty()) {
-    //     return res.status(400).json({ errors: errors.array() })
-    // }
-    // await user.insertOne({...(new UserRegister(req.body)), active: true})
-    //     .then(doc => res.send(doc))
-    //     .catch(error => res.send(error));
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() })
+    }
+    await user.updateOne({_id: req.user._id},{ $set: { ...(new UserRegister(req.body)), active: true}})
+        .then(() => {res.status(200).json({ ok: true })})
+        .catch(() => res.status(500).json({ message: "Error interno del servidor" }));
 }
 
-export const getAll = async (req, res) => {
-    await user.find({})
-        .then(docs => res.send(docs))
-        .catch(error => res.send(error));
-}
+const getUsersByRole = async (req, res, role) => {
+  try {
+    const docs = await user.find({ rol: role });
+    res.status(200).json(docs);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+};
 
-export const getById = async (req, res) => {
-    await user.findOne(req.params)
-        .then(docs => res.send(docs))
-        .catch(error => res.send(error));
-}
+export const getAllTeachers = (req, res) => {
+  return getUsersByRole(req, res, "TE");
+};
 
-export const updateOne = async (req, res) => {
-    console.log(req.body)
-}
-
-export const deleteOne = async (req, res) => {
-    await user.deleteOne(req.params)
-        .then(docs => res.send(docs))
-        .catch(error => res.send(error));
-}
+export const getAllStudents = (req, res) => {
+  return getUsersByRole(req, res, "ST");
+};

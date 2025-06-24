@@ -1,4 +1,4 @@
-import { loginRequest } from '../api/auth';
+import { loginRequest } from '../api/routes';
 
 function Home() {
     return(

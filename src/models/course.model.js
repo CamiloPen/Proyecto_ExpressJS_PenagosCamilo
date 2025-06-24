@@ -8,17 +8,16 @@ const courseSchema = mongoose.Schema({
     description: {
         type: String,
     },
-    intensity:  {
+    intensity: {
         type: Number,
     },
     weight: {
         type: Number,
     },
-    topic: {
-        code: String,
-        title: String,
-        description: String,
-    },
+    topic: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'topics'}
+    ],
     createdAt: {
         type: Date,
         default: Date.now

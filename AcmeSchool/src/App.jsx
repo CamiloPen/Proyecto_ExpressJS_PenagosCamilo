@@ -1,7 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import RegisterPage from './pages/register';
-import Home from './pages/home';
 import { AuthProvider } from './context/AuthContext';
+import {RegisterPage, Home, Courses, Teachers, Students, Topics, Schedules} from './pages/index.js'
 
 function App() {
   return (
@@ -10,8 +9,11 @@ function App() {
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/register' element={<RegisterPage />} />
-          <Route path='/courses' element={<h1>Courses</h1>} />
-          <Route path='/teachers' element={<h1>Teachers</h1>} />
+          <Route path='/courses' element={<Courses />} />
+          <Route path='/teachers' element={<Teachers />} />
+          <Route path='/topics' element={<Topics />} />
+          <Route path='/students' element={<Students />} />
+          <Route path='/schedules' element={<Schedules />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

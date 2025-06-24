@@ -6,41 +6,35 @@ const userSchema = mongoose.Schema({
     },
     userName:  {
         type: String,
-        require: true,
         trim: true
     },
     firstnName: {
         type: String,
-        require: true,
         trim: true
     },
     lastName: {
         type: String,
-        require: true,
         trim: true
     },
     email:  {
         type: String,
-        require: true,
         trim: true
     },
     identification: {
         code: String,
         name: String,
-        number: String,
-        description: String
+        number: String
     },
-    rol: {
-        type: String,
-        enum: ['ST', 'TE', 'AD']
-    },
+    rol: [
+        {type: String,
+        enum: ['ST', 'TE', 'AD']}
+    ],
     gender:  {
         type: String,
         enum: ['Masculino', 'Femenino', 'Otro']
     },
     birthDate: {
         type: Date,
-        require: true,
     },
     place: {
         cityCode: String,

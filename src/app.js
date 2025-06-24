@@ -7,11 +7,8 @@ import cors from 'cors';
 import './config/passport.js'
 import { connectDb } from './utils/db.js';
 import { COOKIE_KEY } from './utils/secrets.js';
-import router from './routes/auth.routes.js';
-import courseRouter from './routes/courses.routers.js';
-import teacherRouter from './routes/teacher.routes.js';
 import { pass } from './controllers/auth.controller.js';
-import userRouter from './routes/user.routers.js';
+import { authRouter, courseRouter, topicRouter, teacherRouter, studentRouter, userRouter, scheduleRouter } from './routes/index.js'
 
 connectDb()
 const app = express()
@@ -37,10 +34,13 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(express.json())
-app.use('/auth', router)
+app.use('/auth', authRouter)
 app.use('/courses', pass, courseRouter)
-app.use('/user', userRouter)
+app.use('/topics', pass, topicRouter)
 app.use('/teachers', pass, teacherRouter)
+app.use('/schedules', scheduleRouter)
+app.use('/students', pass, studentRouter)
+app.use('/user', pass, userRouter)
 
 app.listen({
     hostname: process.env.APP_HOSTNAME,

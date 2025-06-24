@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from "react";
-import { registerRequest } from "../api/auth";
+import { registerRequest } from "../api/routes";
 
 export const AuthContext = createContext()
 
