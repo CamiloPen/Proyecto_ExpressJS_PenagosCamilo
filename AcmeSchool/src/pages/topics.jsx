@@ -1,10 +1,13 @@
 import { useEffect, useState } from 'react';
-import { addTopic, getTopics, deleteTopic } from '../api/routes';
+import { addTopic, getTopics, deleteTopic, updateTopic } from '../api/routes';
 import { useForm } from 'react-hook-form';
 
 function Topics() {
     const [topics, setTopics] = useState([]);
     const { register, handleSubmit, reset } = useForm()
+    const [isEditing, setIsEditing] = useState(false);
+    const [editingCourseId, setEditingCourseId] = useState(null);
+
     const fetchTopics = async () => {
         try {
             const topicRequest = await getTopics();
@@ -35,18 +38,40 @@ function Topics() {
                             Descripción: {topic.description}<br />
                         </p>
                         <button onClick={() => {
-                                                    deleteTopic(topic._id)
-                                                    setTopics(prev => prev.filter(c => c._id !== topic._id));
-                                                }}>Eliminar</button>
+                            deleteTopic(topic._id)
+                            setTopics(prev => prev.filter(c => c._id !== topic._id));
+                        }}>Eliminar</button>
+                        <button onClick={() => {
+                            setIsEditing(true);
+                            setEditingCourseId(topic._id);
+                            reset({
+                                code: topic.code,
+                                description: topic.description,
+                                title: topic.title
+                            })
+                        }}>
+                            Editar
+                        </button>
                     </div>
                 ))}
             </div>
             <form onSubmit={handleSubmit(async (values) => {
                 try {
-                    const response = await addTopic(values);
+                    let response;
+                    if (isEditing && editingCourseId) {
+                        response = await updateTopic(editingCourseId, values);
+                    } else {
+                        response = await addTopic(values);
+                    }
                     if (response.status === 200) {
-                        reset();
+                        reset({
+                            code: '',
+                            description: '',
+                            title: ''
+                        });
                         fetchTopics()
+                        setIsEditing(false);
+                        setEditingCourseId(null)
                     } else {
                         console.log('Error en el registro:', response.data);
                     }
@@ -58,7 +83,7 @@ function Topics() {
                     }
                 }
             })}>
-                <h3>Agregar nuevo tema</h3>
+                <h3>{isEditing ? ("Actualizar tema") : ("Agregar nuevo tema") }</h3>
                 <div>
                     <label htmlFor="code">Codigo del Tema</label>
                     <input type="text" id='code' placeholder='TPC001' {...register('code', { required: true })} />
@@ -71,7 +96,20 @@ function Topics() {
                     <label htmlFor="description">Descripción del tema</label>
                     <textarea id='description' placeholder='Estudio de estructuras de datos como listas enlazadas, pilas y colas.' {...register('description', { required: true })} />
                 </div>
-                <button type="submit">Agregar</button>
+                <button type="submit">{isEditing ? ("Editar") : ("Agregar")}</button>
+                {isEditing && (
+                    <button type="button" onClick={() => {
+                        setIsEditing(false);
+                        setEditingCourseId(null);
+                        reset({
+                            code: '',
+                            description: '',
+                            title: ''
+                        });
+                    }}>
+                        Cancelar edición
+                    </button>
+                )}
             </form>
         </div>
     )

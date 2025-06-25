@@ -8,7 +8,7 @@ import './config/passport.js'
 import { connectDb } from './utils/db.js';
 import { COOKIE_KEY } from './utils/secrets.js';
 import { pass } from './controllers/auth.controller.js';
-import { authRouter, courseRouter, topicRouter, teacherRouter, studentRouter, userRouter, scheduleRouter } from './routes/index.js'
+import { authRouter, courseRouter, topicRouter, userRouter, scheduleRouter } from './routes/index.js'
 
 connectDb()
 const app = express()
@@ -37,9 +37,7 @@ app.use(express.json())
 app.use('/auth', authRouter)
 app.use('/courses', courseRouter)
 app.use('/topics', pass, topicRouter)
-app.use('/teachers', pass, teacherRouter)
 app.use('/schedules', scheduleRouter)
-app.use('/students', pass, studentRouter)
 app.use('/user', pass, userRouter)
 
 app.listen({

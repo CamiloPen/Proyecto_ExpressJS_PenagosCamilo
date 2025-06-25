@@ -10,7 +10,7 @@ export const createGenericController = (Model) => ({
 
     getAll: async (req, res) => {
         try {
-            const docs = await Model.find({});
+            const docs = await Model.find({active: true});
             res.status(200).json(docs);
         } catch (err) {
             res.status(500).send(err);
@@ -40,7 +40,7 @@ export const createGenericController = (Model) => ({
     deleteOne: async (req, res) => {
         try {
             const { _id } = req.params
-            await Model.deleteOne({_id});
+            await Model.updateOne({_id}, {$set: {active: false}} );
             res.status(200).json({ message: 'Eliminado correctamente' });
         } catch (err) {
             res.status(500).send(err);

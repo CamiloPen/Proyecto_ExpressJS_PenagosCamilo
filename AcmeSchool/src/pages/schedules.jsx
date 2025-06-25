@@ -7,6 +7,8 @@ function Schedules() {
     const [schedules, setSchedules] = useState([]);
     const [courses, setCourses] = useState([]);
     const [teachers, setTeachers] = useState([]);
+    const [isEditing, setIsEditing] = useState(false);
+    const [editingCourseId, setEditingCourseId] = useState(null);
 
     const fetchTopics = async () => {
         try {
@@ -55,6 +57,26 @@ function Schedules() {
                             deleteSchedule(schedule._id)
                             setSchedules(prev => prev.filter(c => c._id !== schedule._id));
                         }}>Eliminar</button>
+                        <button onClick={() => {
+                            setIsEditing(true);
+                            setEditingCourseId(schedule._id);
+                            reset({
+                                code: schedule.code,
+                                course: schedule.course,
+                                teacher: schedule.teacher,
+                                schedule: {
+                                    start: new Date(schedule.schedule.start),
+                                    end: schedule.schedule.end,
+                                },
+                                classroom: {
+                                    code: schedule.classroom.code,
+                                    capacity: schedule.classroom.capacity,
+                                    description: schedule.classroom.description
+                                }
+                            });
+                        }}>
+                            Editar
+                        </button>
                     </div>
                 ))}
             </div>

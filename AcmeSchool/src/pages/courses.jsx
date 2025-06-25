@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
-import { addCourse, getCourses, getTopics, deleteCourse } from '../api/routes';
+import { addCourse, getCourses, getTopics, deleteCourse, updateCourse } from '../api/routes';
 
 function Courses() {
     const { register, handleSubmit, reset } = useForm()
@@ -96,7 +96,12 @@ function Courses() {
                     }
 
                     if (response.status === 200) {
-                        reset();
+                        reset({
+                            code: '',
+                            description: '',
+                            intensity: '',
+                            weight: ''
+                        });
                         setSelectedTopics([]);
                         setIsEditing(false);
                         setEditingCourseId(null);
@@ -115,7 +120,7 @@ function Courses() {
                     }
                 }
             })}>
-                <h3>Agregar nuevo curso</h3>
+                <h3>{isEditing ? ("Editar un courso") : ("Agregar nuevo curso")}</h3>
                 <div>
                     <label htmlFor="code">Codigo del curso:</label>
                     <input type="text" id='code' placeholder='COU001' {...register('code', { required: true })} />
@@ -142,7 +147,7 @@ function Courses() {
                         ))}
                     </select>
                 </div>
-                <button type="submit">Agregar</button>
+                <button type="submit">{isEditing ? ("Editar") : ("Agregar")}</button>
                 {isEditing && (
                     <button type="button" onClick={() => {
                         setSelectedTopics([]);
