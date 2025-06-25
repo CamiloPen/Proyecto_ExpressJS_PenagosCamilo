@@ -9,9 +9,5 @@ export const pass = (req, res, next) => {
 export const google = { scope: ['email', 'profile'] }
 
 export const googleRedirect = (req, res) => {
-    if (req.user.rol.length > 0) {
-        res.redirect('http://localhost:5173/schedules')
-    } else {
-        res.redirect('http://localhost:5173/register');
-    }
+    res.redirect('http://localhost:5173/register');
 }

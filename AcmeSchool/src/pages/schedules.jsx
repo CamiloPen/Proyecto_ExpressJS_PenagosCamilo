@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
-import { getSchedules, getCourses, getTeachers, addSchedule } from '../api/routes';
+import { getSchedules, getCourses, getTeachers, addSchedule, deleteSchedule } from '../api/routes';
 
 function Schedules() {
     const { register, handleSubmit, reset } = useForm()
@@ -40,17 +40,21 @@ function Schedules() {
     }, []);
 
     return (
-        <div>
-            <div>
-                <h2>Lista de cursos</h2>
+        <div className='container'>
+            <h2>Lista de cursos programados</h2>
+            <div className='box'>
                 {schedules.length === 0 && <p>No hay cursos disponibles</p>}
                 {schedules.map(schedule => (
-                    <div key={schedule._id} style={{ border: '1px solid #ccc', padding: '1rem', marginBottom: '1rem' }}>
+                    <div className='box-card' key={schedule._id}>
                         <h3>{schedule.code}</h3>
                         <p>
                             Curso: {schedule.course.description}<br />
                             Profesor: {schedule.teacher.firstName} {schedule.teacher.lastName}<br />
                         </p>
+                        <button onClick={() => {
+                            deleteSchedule(schedule._id)
+                            setSchedules(prev => prev.filter(c => c._id !== schedule._id));
+                        }}>Eliminar</button>
                     </div>
                 ))}
             </div>
@@ -71,9 +75,10 @@ function Schedules() {
                     }
                 }
             })}>
+                <h3>Programar un nuevo curso</h3>
                 <div>
-                    <label htmlFor="code">Codigo del curso</label>
-                    <input type="text" id='code' {...register('code', { required: true })} />
+                    <label htmlFor="code">Codigo del horario</label>
+                    <input type="text" id='code' placeholder='SCH001' {...register('code', { required: true })} />
                 </div>
                 <div>
                     <label htmlFor="course">Selecciona un curso:</label>
@@ -105,17 +110,17 @@ function Schedules() {
                 </div>
                 <div>
                     <label htmlFor="classroom.code">Codigo del aula</label>
-                    <input type="text" id='classroom.code' {...register('classroom.code', { required: true })} />
+                    <input type="text" id='classroom.code' placeholder='CLS001' {...register('classroom.code', { required: true })} />
                 </div>
                 <div>
                     <label htmlFor="classroom.description">Descripción del aula</label>
-                    <input type="text" id='classroom.description' {...register('classroom.description', { required: true })} />
+                    <input type="text" id='classroom.description' placeholder='Aula con 30 computadoras y proyector' {...register('classroom.description', { required: true })} />
                 </div>
                 <div>
                     <label htmlFor="classroom.capacity">Capacidad del aula</label>
-                    <input type="number" id='classroom.capacity' {...register('classroom.capacity', { required: true })} />
+                    <input type="number" id='classroom.capacity' placeholder='25' {...register('classroom.capacity', { required: true })} />
                 </div>
-                <button type="submit">Enviar</button>
+                <button type="submit">Programar</button>
             </form>
         </div>
     )

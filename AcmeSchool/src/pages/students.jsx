@@ -22,19 +22,21 @@ function Students() {
     }, []);
 
     return (
-        <div>
+        <div className='container'>
             <h2>Lista de Estudiantes</h2>
-            {students.length === 0 && <p>No Hay estudiantes disponibles</p>}
-            {students.map(student => (
-                <div key={student._id} style={{ border: '1px solid #ccc', padding: '1rem', marginBottom: '1rem' }}>
-                    <h3>{student.code}</h3>
-                    <p>
-                        Nombre: {student.firstName} {student.lastName}<br />
-                        Email: {student.email}<br />
-                        Tipo y Numero de identificación: {student.identification.code}. {student.identification.number}
-                    </p>
-                </div>
-            ))}
+            <div className='box'>
+                {students.length === 0 && <p>No Hay estudiantes disponibles</p>}
+                {students.map(student => (
+                    <div className='box-card' key={student._id}>
+                        <h3>{student.code}</h3>
+                        <p>
+                            Nombre: {student.firstName} {student.lastName}<br />
+                            Email: {student.email}<br />
+                            Tipo y Numero de identificación: {student.identification.code}. {student.identification.number}
+                        </p>
+                    </div>
+                ))}
+            </div>
         </div>
     )
 }

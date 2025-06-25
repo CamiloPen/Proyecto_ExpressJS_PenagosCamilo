@@ -5,33 +5,37 @@ function Navbar() {
     const { isAuthenticated } = useAuth()
 
     return (
-        <nav>
-            <h1>ACME SCHOOL</h1>
-            <ul>
-                {isAuthenticated ? (
-                    <>
-                        <li>
-                            <Link to='/courses'>Cursos</Link>
-                        </li>
-                        <li>
-                            <Link to='/schedules'>Cursos Programados</Link>
-                        </li>
-                        <li>
-                            <Link to='/teachers'>Profesores</Link>
-                        </li>
-                        <li>
-                            <Link to='/topics'>Temas</Link>
-                        </li>
-                        <li>
-                            <Link to='/students'>Estudiantes</Link>
-                        </li>
-                    </>
-                ) : (
-                    <li>
-                        que mas ve
-                    </li>)}
-            </ul>
-        </nav>
+        <header className="main-header">
+            <div className="header-container">
+                <h1>ACME SCHOOL</h1>
+                <nav>
+                    <ul className="nav-menu">
+                        {isAuthenticated ? (
+                            <>
+                                <li>
+                                    <Link to='/courses'>Cursos</Link>
+                                </li>
+                                <li>
+                                    <Link to='/schedules'>Cursos Programados</Link>
+                                </li>
+                                <li>
+                                    <Link to='/teachers'>Profesores</Link>
+                                </li>
+                                <li>
+                                    <Link to='/topics'>Temas</Link>
+                                </li>
+                                <li>
+                                    <Link to='/students'>Estudiantes</Link>
+                                </li>
+                            </>
+                        ) : (
+                            <li>
+                                que mas ve
+                            </li>)}
+                    </ul>
+                </nav>
+            </div>
+        </header>
     )
 }
 

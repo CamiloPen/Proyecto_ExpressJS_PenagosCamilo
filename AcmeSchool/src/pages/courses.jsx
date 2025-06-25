@@ -1,12 +1,15 @@
 import { useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
-import { addCourse, getCourses, getTopics } from '../api/routes';
+import { addCourse, getCourses, getTopics, deleteCourse } from '../api/routes';
 
 function Courses() {
     const { register, handleSubmit, reset } = useForm()
     const [topics, setTopics] = useState([]);
     const [courses, setCourses] = useState([]);
     const [selectedTopics, setSelectedTopics] = useState([]);
+    const [isEditing, setIsEditing] = useState(false);
+    const [editingCourseId, setEditingCourseId] = useState(null);
+
 
     useEffect(() => {
         const fetchTopics = async () => {
@@ -38,12 +41,12 @@ function Courses() {
         setSelectedTopics(selected);
     };
     return (
-        <div>
-            <div>
-                <h2>Lista de cursos</h2>
+        <div className='container'>
+            <h2>Lista de cursos</h2>
+            <div className='box'>
                 {courses.length === 0 && <p>No hay cursos disponibles</p>}
                 {courses.map(course => (
-                    <div key={course._id} style={{ border: '1px solid #ccc', padding: '1rem', marginBottom: '1rem' }}>
+                    <div className='box-card' key={course._id} style={{ border: '1px solid #ccc', padding: '1rem', marginBottom: '1rem' }}>
                         <h3>{course.code}</h3>
                         <p>
                             Descripción: {course.description}<br />
@@ -56,24 +59,53 @@ function Courses() {
                                 <li key={topic._id}>{topic.title}</li>
                             ))}
                         </ul>
+                        <button onClick={() => {
+                            deleteCourse(course._id)
+                            setCourses(prev => prev.filter(c => c._id !== course._id));
+                        }}>Eliminar</button>
+                        <button onClick={() => {
+                            setIsEditing(true);
+                            setEditingCourseId(course._id);
+                            reset({
+                                code: course.code,
+                                description: course.description,
+                                intensity: course.intensity,
+                                weight: course.weight
+                            });
+                            setSelectedTopics(course.topics.map(topic => topic._id));
+                        }}>
+                            Editar
+                        </button>
                     </div>
                 ))}
             </div>
             <form onSubmit={handleSubmit(async (values) => {
-                let newCourse = { ...values, "topic": selectedTopics }
-                newCourse.intensity = Number(newCourse.intensity)
-                newCourse.weight = Number(newCourse.weight)
+                const newCourse = {
+                    ...values,
+                    topic: selectedTopics,
+                    intensity: Number(values.intensity),
+                    weight: Number(values.weight)
+                };
+
                 try {
-                    const response = await addCourse({ ...newCourse });
+                    let response;
+                    if (isEditing && editingCourseId) {
+                        response = await updateCourse(editingCourseId, newCourse);
+                    } else {
+                        response = await addCourse(newCourse);
+                    }
+
                     if (response.status === 200) {
                         reset();
                         setSelectedTopics([]);
+                        setIsEditing(false);
+                        setEditingCourseId(null);
                         const updatedCourses = await getCourses();
                         if (updatedCourses.status === 200) {
                             setCourses(updatedCourses.data);
                         }
                     } else {
-                        console.log('Error en el registro:', response.data);
+                        console.log('Error:', response.data);
                     }
                 } catch (error) {
                     if (error.response) {
@@ -83,24 +115,25 @@ function Courses() {
                     }
                 }
             })}>
+                <h3>Agregar nuevo curso</h3>
                 <div>
-                    <label htmlFor="code">Codigo del curso</label>
-                    <input type="text" id='code' {...register('code', { required: true })} />
+                    <label htmlFor="code">Codigo del curso:</label>
+                    <input type="text" id='code' placeholder='COU001' {...register('code', { required: true })} />
                 </div>
                 <div>
-                    <label htmlFor="description">Descripcion del curso</label>
-                    <input type="text" id='description' {...register('description', { required: true })} />
+                    <label htmlFor="description">Descripcion del curso:</label>
+                    <input type="text" id='description' placeholder='Programación orientada a objetos' {...register('description', { required: true })} />
                 </div>
                 <div>
-                    <label htmlFor="intencity">Intencidad horria</label>
-                    <input type="number" id='intensity' {...register('intensity', { required: true })} />
+                    <label htmlFor="intencity">Intensidad horaria:</label>
+                    <input type="number" id='intensity' placeholder='4' {...register('intensity', { required: true })} />
                 </div>
                 <div>
-                    <label htmlFor="weight">Peso Aritmetico</label>
-                    <input type="number" id='weight' {...register('weight', { required: true })} />
+                    <label htmlFor="weight">Peso Aritmetico:</label>
+                    <input type="number" id='weight' placeholder='1 - 10' {...register('weight', { required: true })} />
                 </div>
                 <div>
-                    <label htmlFor="topic">Selecciona los temas:</label>
+                    <label htmlFor="topic">Selecciona los temas: <br /> <span>*Si desea agregar mas de un tema mantenga precionada la tecla Ctrl + click en otro tema*</span></label>
                     <select id='topic' multiple value={selectedTopics} onChange={handleChange}>
                         {topics.map(topic => (
                             <option key={topic._id} value={topic._id}>
@@ -109,7 +142,22 @@ function Courses() {
                         ))}
                     </select>
                 </div>
-                <button type="submit">Enviar</button>
+                <button type="submit">Agregar</button>
+                {isEditing && (
+                    <button type="button" onClick={() => {
+                        setSelectedTopics([]);
+                        setIsEditing(false);
+                        setEditingCourseId(null);
+                        reset({
+                            code: '',
+                            description: '',
+                            intensity: '',
+                            weight: ''
+                        });
+                    }}>
+                        Cancelar edición
+                    </button>
+                )}
             </form>
         </div>
     )

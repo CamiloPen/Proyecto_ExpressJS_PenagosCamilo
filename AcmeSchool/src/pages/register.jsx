@@ -1,14 +1,23 @@
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from "react-router-dom";
-import { registerRequest } from '../api/routes';
+import { login, registerRequest } from "../api/routes";
 import { useAuth } from '../context/AuthContext';
 
 function RegisterPage() {
     const { singup } = useAuth()
+
+    async function find() {
+        const res = await login();
+        if (res.data.rol.length > 0) {
+            await singup(res.data)
+            navigate('/courses');
+        }
+    }
+
     const { register, watch, handleSubmit, setValue } = useForm()
     const navigate = useNavigate();
-    
+
     const [selectedRoles, setSelectedRoles] = useState([]);
 
     const handleChange = (e) => {
@@ -37,7 +46,8 @@ function RegisterPage() {
         OTR: 'Otro',
     };
 
-    useEffect(() => {
+    useEffect(() => {   
+        find()
         if (identificationCode) {
             setValue('identification.name', idNames[identificationCode]);
         }
@@ -49,12 +59,12 @@ function RegisterPage() {
     return (
         <div>
             <form onSubmit={handleSubmit(async values => {
-                const updateUser = {...values, rol: selectedRoles}
+                const updateUser = { ...values, rol: selectedRoles }
                 singup(updateUser)
                 try {
-                    const response = await registerRequest(updateUser); 
+                    const response = await registerRequest(updateUser);
                     if (response.status === 200) {
-                        navigate('/courses'); 
+                        navigate('/courses');
                     } else {
                         console.log('Error en el registro:', response.data);
                     }
@@ -66,13 +76,14 @@ function RegisterPage() {
                     }
                 }
             })}>
+                <h3>Para continuar por favor completa el formulario</h3>
                 <div>
-                    <label htmlFor="firstName">Digite su nombre</label>
-                    <input type="text" id='firstName' {...register('firstName', { required: true })} />
+                    <label htmlFor="firstName">Digite su nombre:</label>
+                    <input type="text" id='firstName' placeholder="Juan" {...register('firstName', { required: true })} />
                 </div>
                 <div>
-                    <label htmlFor="lastName">Digite su apellido</label>
-                    <input type="text" id='lastName' {...register('lastName', { required: true })} />
+                    <label htmlFor="lastName">Digite su apellido:</label>
+                    <input type="text" id='lastName' placeholder="lopez" {...register('lastName', { required: true })} />
                 </div>
                 <div>
                     <label htmlFor="identification.code">Tipo de Identificación</label>
@@ -86,10 +97,10 @@ function RegisterPage() {
                 </div>
                 <div>
                     <label htmlFor="identificatio.number">Número de Identificación</label>
-                    <input type="number" id='identification.number' {...register('identification.number', { required: true })} />
+                    <input type="number" id='identification.number' placeholder="0123456789" {...register('identification.number', { required: true })} />
                 </div>
                 <div>
-                    <label htmlFor="rol">Rol</label>
+                    <label htmlFor="rol">Rol <span>*Si desea agregar mas de un rol mantenga precionada la tecla Ctrl + click en otro rol*</span></label>
                     <select id='rol' multiple value={selectedRoles} onChange={handleChange}>
                         <option value="AD">Administrador</option>
                         <option value="ST">Estudiante</option>
@@ -109,7 +120,7 @@ function RegisterPage() {
                     <input type="date" id='birthDate' {...register('birthDate', { required: true })} />
                 </div>
                 <div>
-                    <label htmlFor="place.cityCode">Ciudad</label>
+                    <label htmlFor="place.cityCode">Ciudad de recidencia:</label>
                     <select id='place.cityCode' {...register('place.cityCode', { required: true })}>
                         <option value="BAR">Barranquilla</option>
                         <option value="BOG">Bogotá</option>
@@ -123,8 +134,8 @@ function RegisterPage() {
                     <input type='hidden' id='place.cityName' {...register('place.cityName')} />
                 </div>
                 <div>
-                    <label htmlFor="place.address">Dirección</label>
-                    <input type="text" id='place.address' {...register('place.address', { required: true })} />
+                    <label htmlFor="place.address">Dirección:</label>
+                    <input type="text" id='place.address' placeholder="calle #12 - 12" {...register('place.address', { required: true })} />
                 </div>
                 <button type="submit">Registrarse</button>
             </form>

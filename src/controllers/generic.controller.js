@@ -29,8 +29,9 @@ export const createGenericController = (Model) => ({
 
     updateOne: async (req, res) => {
         try {
-            const updated = await Model.updateOne(req.params, { $set: req.body })
-            res.status(200).json(updated);
+            const { _id } = req.params
+            await Model.updateOne({_id}, { $set: req.body })
+            res.status(200).json("updated");
         } catch (err) {
             res.status(500).send(err);
         }
@@ -38,7 +39,8 @@ export const createGenericController = (Model) => ({
 
     deleteOne: async (req, res) => {
         try {
-            await Model.deleteOne(req.params._id);
+            const { _id } = req.params
+            await Model.deleteOne({_id});
             res.status(200).json({ message: 'Eliminado correctamente' });
         } catch (err) {
             res.status(500).send(err);

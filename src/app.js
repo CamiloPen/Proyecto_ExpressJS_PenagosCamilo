@@ -35,7 +35,7 @@ app.use(passport.session());
 
 app.use(express.json())
 app.use('/auth', authRouter)
-app.use('/courses', pass, courseRouter)
+app.use('/courses', courseRouter)
 app.use('/topics', pass, topicRouter)
 app.use('/teachers', pass, teacherRouter)
 app.use('/schedules', scheduleRouter)
