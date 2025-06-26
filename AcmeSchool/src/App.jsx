@@ -1,8 +1,10 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
+import RoleSelector from './context/RoleSelector.jsx';
 import { RegisterPage, Home, Courses, Teachers, Students, Topics, Schedules } from './pages/index.js'
-import Navbar from './components/navbar.jsx';
-import Protected from './protectedRoute.jsx';
+import Navbar from './components/navbar';
+import Protected from './context/protectedRoute';
+import Profile from './pages/profile.jsx';
 
 function App() {
   return (
@@ -11,9 +13,11 @@ function App() {
         <Navbar />
         <Routes>
           <Route path='/' element={<Home />} />
-          <Route path='/register' element={<RegisterPage />} />
+            <Route path='/register' element={<RegisterPage />} />
 
           <Route element={<Protected/>}>
+            <Route path='/roles' element={<RoleSelector />} />
+            <Route path='/profile' element={<Profile />} />
             <Route path='/courses' element={<Courses />} />
             <Route path='/teachers' element={<Teachers />} />
             <Route path='/topics' element={<Topics />} />

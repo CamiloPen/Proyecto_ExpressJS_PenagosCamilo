@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
-import { getSchedules, getCourses, getTeachers, addSchedule, deleteSchedule } from '../api/routes';
+import { getSchedules, getCourses, getTeachers, addSchedule, deleteSchedule, updateSchedule } from '../api/routes';
 
 function Schedules() {
     const { register, handleSubmit, reset } = useForm()
@@ -8,7 +8,7 @@ function Schedules() {
     const [courses, setCourses] = useState([]);
     const [teachers, setTeachers] = useState([]);
     const [isEditing, setIsEditing] = useState(false);
-    const [editingCourseId, setEditingCourseId] = useState(null);
+    const [editingId, setEditingId] = useState(null);
 
     const fetchTopics = async () => {
         try {
@@ -59,14 +59,14 @@ function Schedules() {
                         }}>Eliminar</button>
                         <button onClick={() => {
                             setIsEditing(true);
-                            setEditingCourseId(schedule._id);
+                            setEditingId(schedule._id);
                             reset({
                                 code: schedule.code,
-                                course: schedule.course,
-                                teacher: schedule.teacher,
+                                course: schedule.course._id,
+                                teacher: schedule.teacher._id,
                                 schedule: {
-                                    start: new Date(schedule.schedule.start),
-                                    end: schedule.schedule.end,
+                                    start: schedule.schedule.start.split('T')[0],
+                                    end: schedule.schedule.end.split('T')[0],
                                 },
                                 classroom: {
                                     code: schedule.classroom.code,
@@ -82,10 +82,30 @@ function Schedules() {
             </div>
             <form onSubmit={handleSubmit(async (values) => {
                 try {
-                    const response = await addSchedule(values);
+                    let response;
+                    if (isEditing && editingId) {
+                        response = await updateSchedule(editingId, values);
+                    } else {
+                        response = await addSchedule(values);
+                    }
                     if (response.status === 200) {
-                        reset();
+                        reset({
+                            code: "",
+                            course: "",
+                            teacher: "",
+                            schedule: {
+                                start: "",
+                                end: "",
+                            },
+                            classroom: {
+                                code: "",
+                                capacity: "",
+                                description: ""
+                            }
+                        });
                         fetchTopics()
+                        setIsEditing(false);
+                        setEditingId(null);
                     } else {
                         console.log('Error en el registro:', response.data);
                     }
@@ -97,7 +117,7 @@ function Schedules() {
                     }
                 }
             })}>
-                <h3>Programar un nuevo curso</h3>
+                <h3>{isEditing ? ("Editar programación") : ("Programar un nuevo curso")}</h3>
                 <div>
                     <label htmlFor="code">Codigo del horario</label>
                     <input type="text" id='code' placeholder='SCH001' {...register('code', { required: true })} />
@@ -142,7 +162,29 @@ function Schedules() {
                     <label htmlFor="classroom.capacity">Capacidad del aula</label>
                     <input type="number" id='classroom.capacity' placeholder='25' {...register('classroom.capacity', { required: true })} />
                 </div>
-                <button type="submit">Programar</button>
+                <button type="submit">{isEditing ? ("Editar") : ("Programar")}</button>
+                {isEditing && (
+                    <button type="button" onClick={() => {
+                        setIsEditing(false);
+                        setEditingId(null);
+                        reset({
+                            code: "",
+                            course: "",
+                            teacher: "",
+                            schedule: {
+                                start: "",
+                                end: "",
+                            },
+                            classroom: {
+                                code: "",
+                                capacity: "",
+                                description: ""
+                            }
+                        });
+                    }}>
+                        Cancelar edición
+                    </button>
+                )}
             </form>
         </div>
     )

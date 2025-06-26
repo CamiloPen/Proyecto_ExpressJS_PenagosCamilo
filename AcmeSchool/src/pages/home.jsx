@@ -1,9 +1,8 @@
 import { loginRequest } from '../api/routes';
-import { useAuth } from '../context/AuthContext';
 
 function Home() {
     return(
-        <div>
+        <div className='container'>
             <button onClick={() => loginRequest()}>login</button>
         </div>
     )

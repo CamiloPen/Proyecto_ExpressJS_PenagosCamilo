@@ -34,3 +34,5 @@ export const deleteSchedule = (id) => axios.delete(`${API}/schedules/${id}`)
 export const updateCourse = (id, course) => axios.put(`${API}/courses/${id}`, course)
 
 export const updateTopic = (id, topic) => axios.put(`${API}/topics/${id}`, topic)
+
+export const updateSchedule = (id, schedule) => axios.put(`${API}/schedules/${id}`, schedule)

@@ -8,7 +8,7 @@ function Courses() {
     const [courses, setCourses] = useState([]);
     const [selectedTopics, setSelectedTopics] = useState([]);
     const [isEditing, setIsEditing] = useState(false);
-    const [editingCourseId, setEditingCourseId] = useState(null);
+    const [editingId, setEditingId] = useState(null);
 
 
     useEffect(() => {
@@ -65,7 +65,7 @@ function Courses() {
                         }}>Eliminar</button>
                         <button onClick={() => {
                             setIsEditing(true);
-                            setEditingCourseId(course._id);
+                            setEditingId(course._id);
                             reset({
                                 code: course.code,
                                 description: course.description,
@@ -89,8 +89,8 @@ function Courses() {
 
                 try {
                     let response;
-                    if (isEditing && editingCourseId) {
-                        response = await updateCourse(editingCourseId, newCourse);
+                    if (isEditing && editingId) {
+                        response = await updateCourse(editingId, newCourse);
                     } else {
                         response = await addCourse(newCourse);
                     }
@@ -152,7 +152,7 @@ function Courses() {
                     <button type="button" onClick={() => {
                         setSelectedTopics([]);
                         setIsEditing(false);
-                        setEditingCourseId(null);
+                        setEditingId(null);
                         reset({
                             code: '',
                             description: '',

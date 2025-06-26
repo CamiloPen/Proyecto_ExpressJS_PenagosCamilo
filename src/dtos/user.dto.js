@@ -1,6 +1,6 @@
 export default class UserRegister {
     constructor(data) {
-        this.firstnName = data.firstnName
+        this.firstName = data.firstName
         this.lastName = data.lastName
         this.identification = data.identification
         this.rol = data.rol

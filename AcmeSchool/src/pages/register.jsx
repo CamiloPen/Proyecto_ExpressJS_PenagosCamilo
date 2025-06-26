@@ -11,7 +11,7 @@ function RegisterPage() {
         const res = await login();
         if (res.data.rol.length > 0) {
             await singup(res.data)
-            navigate('/courses');
+            navigate('/roles');
         }
     }
 
@@ -57,14 +57,14 @@ function RegisterPage() {
     }, [identificationCode, setValue, placeCityCode]);
 
     return (
-        <div>
+        <div className='container'>
             <form onSubmit={handleSubmit(async values => {
                 const updateUser = { ...values, rol: selectedRoles }
                 singup(updateUser)
                 try {
                     const response = await registerRequest(updateUser);
                     if (response.status === 200) {
-                        navigate('/courses');
+                        navigate('/roles');
                     } else {
                         console.log('Error en el registro:', response.data);
                     }
