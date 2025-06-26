@@ -1,5 +1,6 @@
 import { useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
+import Navbar from '../components/navbar';
 import { getSchedules, getCourses, getTeachers, addSchedule, deleteSchedule, updateSchedule, getStudents } from '../api/routes';
 
 function Schedules() {
@@ -56,7 +57,8 @@ function Schedules() {
         fetchTopics();
     }, []);
 
-    return (
+    return (<>
+        <Navbar />
         <div className='container'>
             <h2>Lista de cursos programados</h2>
             <div className='box'>
@@ -212,7 +214,7 @@ function Schedules() {
                     </button>
                 )}
             </form>
-        </div>
+        </div></>
     )
 }
 

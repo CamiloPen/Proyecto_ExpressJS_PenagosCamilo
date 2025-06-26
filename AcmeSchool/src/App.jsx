@@ -2,30 +2,31 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import RoleSelector from './context/RoleSelector.jsx';
 import { RegisterPage, Home, Courses, Teachers, Students, Topics, Schedules, Profile, Rates } from './pages/index.js'
-import Navbar from './components/navbar';
+
 import Protected from './context/protectedRoute';
-import Admin from './context/Admin.jsx';
+import { Admin, All } from './context/Admin.jsx';
 
 function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
-        <Navbar />
         <Routes>
           <Route path='/' element={<Home />} />
-            <Route path='/register' element={<RegisterPage />} />
+          <Route path='/register' element={<RegisterPage />} />
 
-          <Route element={<Protected/>}>
+          <Route element={<Protected />}>
             <Route path='/roles' element={<RoleSelector />} />
-            <Route path='/profile' element={<Profile />} />
+            <Route element={<All />}>
+              <Route path='/profile' element={<Profile />} />
               <Route path='/schedules' element={<Schedules />} />
 
-            <Route element={<Admin/>}>
-              <Route path='/Rates' element={<Rates/>}/>
-              <Route path='/courses' element={<Courses />} />
-              <Route path='/students' element={<Students />} />
-              <Route path='/teachers' element={<Teachers />} />
-              <Route path='/topics' element={<Topics />} />
+              <Route element={<Admin />}>
+                <Route path='/Rates' element={<Rates />} />
+                <Route path='/courses' element={<Courses />} />
+                <Route path='/students' element={<Students />} />
+                <Route path='/teachers' element={<Teachers />} />
+                <Route path='/topics' element={<Topics />} />
+              </Route>
             </Route>
           </Route>
         </Routes>

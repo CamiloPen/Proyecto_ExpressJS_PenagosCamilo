@@ -10,4 +10,13 @@ function Admin() {
     return <Outlet />
 }
 
-export default Admin  
+function All() {
+    const { user } = useAuth()
+    if (typeof user.rol != "string" ) {
+        return <Navigate to='/roles'/>
+    }
+
+    return <Outlet />
+}
+
+export {Admin, All} 

@@ -2,6 +2,8 @@ import { useAuth } from '../context/AuthContext';
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { registerRequest } from '../api/routes';
+import Navbar from '../components/navbar';
+
 
 function Profile() {
     const { user } = useAuth();
@@ -39,7 +41,8 @@ function Profile() {
         }
     }, [identificationCode, setValue, placeCityCode]);
 
-    return (
+    return (<>
+        <Navbar />
         <div className='container'>
             <form onSubmit={handleSubmit(async (values) => {
                 try {
@@ -176,7 +179,7 @@ function Profile() {
                     {isEditing ? 'Cancelar edición' : 'Actualizar información'}
                 </button>
             </form>
-        </div>
+        </div></>
     );
 }
 

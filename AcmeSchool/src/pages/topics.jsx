@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
+import Navbar from '../components/navbar';
 import { addTopic, getTopics, deleteTopic, updateTopic } from '../api/routes';
 import { useForm } from 'react-hook-form';
 
@@ -26,7 +27,8 @@ function Topics() {
         fetchTopics();
     }, []);
 
-    return (
+    return (<>
+        <Navbar />
         <div className='container'>
             <h2>Lista de Temas</h2>
             <div className='box'>
@@ -84,7 +86,7 @@ function Topics() {
                     }
                 }
             })}>
-                <h3>{isEditing ? ("Actualizar tema") : ("Agregar nuevo tema") }</h3>
+                <h3>{isEditing ? ("Actualizar tema") : ("Agregar nuevo tema")}</h3>
                 <div>
                     <label htmlFor="code">Codigo del Tema</label>
                     <input type="text" id='code' placeholder='TPC001' {...register('code', { required: true })} />
@@ -112,7 +114,7 @@ function Topics() {
                     </button>
                 )}
             </form>
-        </div>
+        </div></>
     )
 }
 

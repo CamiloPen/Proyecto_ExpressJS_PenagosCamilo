@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { getTeachers } from '../api/routes';
+import Navbar from '../components/navbar';
 
 function Teachers() {
     const [teachers, setTeachers] = useState([]);
@@ -21,7 +22,8 @@ function Teachers() {
         fetchTopics();
     }, []);
 
-    return (
+    return (<>
+        <Navbar />
         <div className='container'>
             <h2>Lista de Profesores</h2>
             <div className='box'>
@@ -37,7 +39,7 @@ function Teachers() {
                     </div>
                 ))}
             </div>
-        </div>
+        </div></>
     )
 }
 

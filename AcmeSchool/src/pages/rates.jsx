@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { getSchedules } from '../api/routes';
-
+import Navbar from '../components/navbar';
 
 function Rates() {
     const [schedules, setSchedules] = useState([]);
@@ -20,7 +20,8 @@ function Rates() {
     useEffect(() => {
         fetchTopics();
     }, []);
-    return (
+    return (<>
+        <Navbar />
         <div className='container'>
             <h2>Lista de cursos programados</h2>
             <div className='box'>
@@ -36,7 +37,7 @@ function Rates() {
                     </div>
                 ))}
             </div>
-        </div>
+        </div></>
     )
 }
 

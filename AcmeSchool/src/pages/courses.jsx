@@ -1,4 +1,5 @@
 import { useForm } from 'react-hook-form';
+import Navbar from '../components/navbar';
 import { useEffect, useState } from 'react';
 import { addCourse, getCourses, getTopics, deleteCourse, updateCourse } from '../api/routes';
 
@@ -40,7 +41,8 @@ function Courses() {
         const selected = Array.from(e.target.selectedOptions, option => option.value);
         setSelectedTopics(selected);
     };
-    return (
+    return (<>
+        <Navbar />
         <div className='container'>
             <h2>Lista de cursos</h2>
             <div className='box'>
@@ -164,7 +166,7 @@ function Courses() {
                     </button>
                 )}
             </form>
-        </div>
+        </div></>
     )
 }
 

@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from "react-router-dom";
 import { login, registerRequest } from "../api/routes";
 import { useAuth } from '../context/AuthContext';
+import Navbar from '../components/navbar';
 
 function RegisterPage() {
     const { singup } = useAuth()
@@ -58,6 +59,8 @@ function RegisterPage() {
     }, [identificationCode, setValue, placeCityCode]);
 
     return (
+        <>
+        <Navbar />
         <div className='container'>
             <form onSubmit={handleSubmit(async values => {
                 const updateUser = { ...values, rol: selectedRoles }
@@ -140,7 +143,7 @@ function RegisterPage() {
                 </div>
                 <button type="submit">Registrarse</button>
             </form>
-        </div>
+        </div></>
     )
 }
 
