@@ -1,5 +1,5 @@
 import { useAuth } from '../context/AuthContext';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { registerRequest } from '../api/routes';
 
@@ -7,7 +7,37 @@ function Profile() {
     const { user } = useAuth();
 
     const [isEditing, setIsEditing] = useState(false);
-    const { register, handleSubmit } = useForm();
+    const { register, handleSubmit, setValue, watch } = useForm();
+
+    const identificationCode = watch('identification.code');
+    const placeCityCode = watch('place.cityCode');
+
+    const idNames = {
+        CE: 'Cédula de Extranjería',
+        CC: 'Cédula de Ciudadanía',
+        TI: 'Tarjeta de Identidad',
+        PAS: 'Pasaporte'
+    };
+
+    const cityNames = {
+        BAR: 'Barranquilla',
+        BOG: 'Bogotá',
+        BGA: 'Bucaramanga',
+        CAL: 'Cali',
+        CAR: 'Cartagena',
+        MAN: 'Manizales',
+        MED: 'Medellin',
+        OTR: 'Otro',
+    };
+
+    useEffect(() => {   
+        if (identificationCode) {
+            setValue('identification.name', idNames[identificationCode]);
+        }
+        if (placeCityCode) {
+            setValue('place.cityName', cityNames[placeCityCode])
+        }
+    }, [identificationCode, setValue, placeCityCode]);
 
     return (
         <div className='container'>
@@ -16,7 +46,6 @@ function Profile() {
                     const response = await registerRequest(values);
                     if (response.status === 200) {
                         setIsEditing(false);
-
                     } else {
                         console.log('Error en el registro:', response.data);
                     }

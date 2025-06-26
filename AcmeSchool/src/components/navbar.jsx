@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 function Navbar() {
-    const { isAuthenticated } = useAuth()
+    const { isAuthenticated, user } = useAuth()
 
     return (
         <header className="main-header">
@@ -26,6 +26,9 @@ function Navbar() {
                                 </li>
                                 <li>
                                     <Link to='/students'>Estudiantes</Link>
+                                </li>
+                                <li>
+                                    <Link to='/rates'>Calificaciones</Link>
                                 </li>
                             </>
                         ) : (

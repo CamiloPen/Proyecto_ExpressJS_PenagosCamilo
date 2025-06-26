@@ -41,15 +41,6 @@ const userSchema = mongoose.Schema({
         cityName: String,
         address: String
     },
-    courses: [{
-        id: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'courseSchedules'
-        },
-        rate: Number,
-        registerDate: Date,
-        comment: String
-    }],
     createdAt: {
         type: Date,
         default: Date.now

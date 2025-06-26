@@ -23,6 +23,18 @@ const courseScheduleSchema = mongoose.Schema({
         description: String,
         capacity: Number
     },
+    students: [{
+        id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'users'
+        },
+        rate: Number,
+        registerDate: {
+            type: Date,
+            default: Date.now
+        },
+        comment: String
+    }],
     createdAt: {
         type: Date,
         default: Date.now

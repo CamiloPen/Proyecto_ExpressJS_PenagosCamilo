@@ -22,6 +22,7 @@ function RoleSelector() {
                     onClick={() => {
                         user.rol = role
                         navigate('/profile')
+                        console.log(user)
                     }}
                     className="block w-full my-2 bg-blue-500 text-white py-2 rounded"
                 >

@@ -1,18 +1,27 @@
 import { useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
-import { getSchedules, getCourses, getTeachers, addSchedule, deleteSchedule, updateSchedule } from '../api/routes';
+import { getSchedules, getCourses, getTeachers, addSchedule, deleteSchedule, updateSchedule, getStudents } from '../api/routes';
 
 function Schedules() {
     const { register, handleSubmit, reset } = useForm()
     const [schedules, setSchedules] = useState([]);
+    const [students, setStudents] = useState([]);
     const [courses, setCourses] = useState([]);
     const [teachers, setTeachers] = useState([]);
     const [isEditing, setIsEditing] = useState(false);
     const [editingId, setEditingId] = useState(null);
 
+    const [selectedStudents, setSelectedSselectedStudents] = useState([]);
+
+    const handleChange = (e) => {
+        const selected = Array.from(e.target.selectedOptions, option => option.value);
+        setSelectedSselectedStudents(selected);
+    };
+
     const fetchTopics = async () => {
         try {
             const scheduleRequest = await getSchedules();
+            const studentRequest = await getStudents();
             const courseRequest = await getCourses();
             const teacherRequest = await getTeachers();
 
@@ -20,6 +29,12 @@ function Schedules() {
                 setTeachers(teacherRequest.data);
             } else {
                 console.error('Error en el registro:', teacherRequest.data || teacherRequest);
+            }
+
+            if (studentRequest.status === 200) {
+                setStudents(studentRequest.data);
+            } else {
+                console.error('Error en el registro:', studentRequest.data || studentRequest);
             }
 
             if (courseRequest.status === 200) {
@@ -81,12 +96,13 @@ function Schedules() {
                 ))}
             </div>
             <form onSubmit={handleSubmit(async (values) => {
+                const submitSchedule = { ...values, students: selectedStudents }
                 try {
                     let response;
                     if (isEditing && editingId) {
-                        response = await updateSchedule(editingId, values);
+                        response = await updateSchedule(editingId, submitSchedule);
                     } else {
-                        response = await addSchedule(values);
+                        response = await addSchedule(submitSchedule);
                     }
                     if (response.status === 200) {
                         reset({
@@ -161,6 +177,16 @@ function Schedules() {
                 <div>
                     <label htmlFor="classroom.capacity">Capacidad del aula</label>
                     <input type="number" id='classroom.capacity' placeholder='25' {...register('classroom.capacity', { required: true })} />
+                </div>
+                <div>
+                    <label htmlFor="students.id">Selecciona los estudiantes:</label>
+                    <select id='students.id' multiple value={selectedStudents} onChange={handleChange}>
+                        {students.map(student => (
+                            <option key={student._id} value={student._id}>
+                                {student.firstName} {student.lastName}
+                            </option>
+                        ))}
+                    </select>
                 </div>
                 <button type="submit">{isEditing ? ("Editar") : ("Programar")}</button>
                 {isEditing && (

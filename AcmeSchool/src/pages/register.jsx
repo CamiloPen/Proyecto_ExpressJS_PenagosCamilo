@@ -27,6 +27,7 @@ function RegisterPage() {
 
     const identificationCode = watch('identification.code');
     const placeCityCode = watch('place.cityCode');
+    const roles = watch('place.cityCode');
 
     const idNames = {
         CE: 'Cédula de Extranjería',
@@ -64,7 +65,7 @@ function RegisterPage() {
                 try {
                     const response = await registerRequest(updateUser);
                     if (response.status === 200) {
-                        navigate('/roles');
+                        find()
                     } else {
                         console.log('Error en el registro:', response.data);
                     }

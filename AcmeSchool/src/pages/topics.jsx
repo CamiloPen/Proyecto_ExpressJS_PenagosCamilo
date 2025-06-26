@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useAuth } from '../context/AuthContext';
 import { addTopic, getTopics, deleteTopic, updateTopic } from '../api/routes';
 import { useForm } from 'react-hook-form';
 
