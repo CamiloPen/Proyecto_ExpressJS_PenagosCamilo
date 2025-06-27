@@ -19,4 +19,13 @@ function All() {
     return <Outlet />
 }
 
-export {Admin, All} 
+function Teacher() {
+    const { user } = useAuth()
+    if (user.rol == "ST" ) {
+        return <Navigate to='/schedules'/>
+    }
+
+    return <Outlet />
+}
+
+export {Admin, All, Teacher} 

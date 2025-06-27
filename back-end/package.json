@@ -1,10 +1,10 @@
 {
-  "name": "lol",
+  "name": "back-end",
   "version": "1.0.0",
   "main": "src/app.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon lol --quiet"
+    "dev": "nodemon back-end --quiet"
   },
   "keywords": [],
   "author": "",

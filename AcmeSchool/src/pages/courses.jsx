@@ -61,6 +61,7 @@ function Courses() {
                                 <li key={topic._id}>{topic.title}</li>
                             ))}
                         </ul>
+                        <div className='container-buttons'>
                         <button onClick={() => {
                             deleteCourse(course._id)
                             setCourses(prev => prev.filter(c => c._id !== course._id));
@@ -78,6 +79,7 @@ function Courses() {
                         }}>
                             Editar
                         </button>
+                    </div>
                     </div>
                 ))}
             </div>
@@ -106,7 +108,7 @@ function Courses() {
                         });
                         setSelectedTopics([]);
                         setIsEditing(false);
-                        setEditingCourseId(null);
+                        setEditingId(null);
                         const updatedCourses = await getCourses();
                         if (updatedCourses.status === 200) {
                             setCourses(updatedCourses.data);

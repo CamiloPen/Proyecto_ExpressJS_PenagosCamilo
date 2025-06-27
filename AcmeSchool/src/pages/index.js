@@ -7,5 +7,6 @@ import Topics from './topics';
 import Schedules from './schedules';
 import Profile from './profile';
 import Rates from './rates';
+import MySchedules from './mySchedules';
 
-export {RegisterPage, Home, Courses, Teachers, Students, Topics, Schedules, Profile, Rates}
+export {RegisterPage, Home, Courses, Teachers, Students, Topics, Schedules, Profile, Rates, MySchedules}

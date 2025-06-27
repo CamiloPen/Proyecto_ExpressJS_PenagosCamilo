@@ -70,6 +70,7 @@ function Schedules() {
                             Curso: {schedule.course.description}<br />
                             Profesor: {schedule.teacher.firstName} {schedule.teacher.lastName}<br />
                         </p>
+                        <div className='container-buttons'>
                         <button onClick={() => {
                             deleteSchedule(schedule._id)
                             setSchedules(prev => prev.filter(c => c._id !== schedule._id));
@@ -94,6 +95,7 @@ function Schedules() {
                         }}>
                             Editar
                         </button>
+                    </div>
                     </div>
                 ))}
             </div>

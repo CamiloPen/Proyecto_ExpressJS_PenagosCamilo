@@ -5,5 +5,6 @@ export default class Schedule {
         this.schedule = data.schedule
         this.classroom = data.classroom
         this.teacher = data.teacher
+        this.students = data.students
     }
 }

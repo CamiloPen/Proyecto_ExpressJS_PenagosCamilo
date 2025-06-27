@@ -40,7 +40,8 @@ function Topics() {
                             Titulo: {topic.title}<br />
                             Descripción: {topic.description}<br />
                         </p>
-                        <button onClick={() => {
+                        <div className='container-buttons'>
+                            <button onClick={() => {
                             deleteTopic(topic._id)
                             setTopics(prev => prev.filter(c => c._id !== topic._id));
                         }}>Eliminar</button>
@@ -55,6 +56,7 @@ function Topics() {
                         }}>
                             Editar
                         </button>
+                        </div>
                     </div>
                 ))}
             </div>

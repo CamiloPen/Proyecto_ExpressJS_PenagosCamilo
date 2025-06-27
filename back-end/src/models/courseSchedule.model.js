@@ -28,7 +28,7 @@ const courseScheduleSchema = mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: 'users'
         },
-        rate: Number,
+        grade: Number,
         registerDate: {
             type: Date,
             default: Date.now

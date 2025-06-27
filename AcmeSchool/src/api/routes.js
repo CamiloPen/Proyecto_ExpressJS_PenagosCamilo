@@ -15,6 +15,12 @@ export const getCourses = () => axios.get(`${API}/courses`)
 
 export const getSchedules = () => axios.get(`${API}/schedules`)
 
+export const getStudentsBySchedules = () => axios.get(`${API}/schedules/students`)
+
+export const getSchedulesByStudents = () => axios.get(`${API}/schedules/courses`)
+
+export const getSchedulesByTeachers = () => axios.get(`${API}/schedules/teachers`)
+
 export const getTeachers = () => axios.get(`${API}/user/teachers`)
 
 export const getStudents = () => axios.get(`${API}/user/students`)

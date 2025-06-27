@@ -4,13 +4,6 @@
     box-sizing: border-box;
 }
 
-body {
-    font-family: 'Segoe UI', sans-serif;
-    background-color: #f4f4f8;
-    color: #333;
-    padding: 20px;
-}
-
 .container { 
     padding-top: 90px;
     max-width: 1400px;
@@ -132,7 +125,7 @@ form textarea {
     height: 60px;
 }
 
-form button {
+button {
     background-color: #5c3c92;
     color: white;
     border: none;
@@ -144,10 +137,35 @@ form button {
     transition: background-color 0.3s ease;
 }
 
-form button:hover {
+button:hover {
     background-color: #462c6a;
 }
 
 form span {
     color: #8d8d8d;
+}
+
+.container-buttons {
+    margin: auto;
+    max-width: 600px;
+    display: flex;
+    gap: 20px;
+    justify-content: space-around;
+}
+
+button {
+    margin-top: 20px;
+    width: 100%;
+}
+
+@media (max-width: 742px) {
+  .container {
+    padding-top: 130px;
+  }
+}
+
+@media (max-width: 742px) {
+  .container {
+    padding-top: 130px;
+  }
 }
